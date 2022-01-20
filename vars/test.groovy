@@ -3,7 +3,7 @@ import java.lang.Boolean
 @NonCPS
 def call() {
   Boolean.metaClass.toYeAnio {
-    delegate ? "예" : "아니오"
+    delegate ? '예' : '아니오'
   }
 
   def a = true
