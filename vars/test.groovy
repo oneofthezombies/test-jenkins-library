@@ -9,3 +9,7 @@ Boolean.metaClass.toYeAnio {
 }
 
 println '3'
+
+def a() {
+    println 'a'
+}
