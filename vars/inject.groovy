@@ -5,13 +5,4 @@ def call() {
   Boolean.metaClass.toKorean {
     delegate ? "예" : "아니오"
   }
-
-  def a = true
-  println a
-  def b = a.toKorean()
-  println b
-}
-
-def wtf() {
-  "왓더"
 }
