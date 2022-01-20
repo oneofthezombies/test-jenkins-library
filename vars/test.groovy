@@ -8,7 +8,7 @@ def call() {
 
   def a = true
   println a
-  def b = a.toYeAnio()
+  def b = a.toKorean()
   println b
 }
 
