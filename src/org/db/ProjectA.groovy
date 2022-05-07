@@ -1,7 +1,4 @@
-import org.db.Base
-
-
-class ProjectA extends Base {
+class ProjectA extends org.db.Base {
     Integer updateMyProjectVersion(String branch) {
         Integer version = 0
         def sql = super.connect()
