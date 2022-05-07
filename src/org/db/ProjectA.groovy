@@ -1,4 +1,7 @@
-class ProjectA extends org.db.Base {
+package org.db
+
+
+class ProjectA extends Base {
     Integer updateMyProjectVersion(String branch) {
         Integer version = 0
         def sql = super.connect()

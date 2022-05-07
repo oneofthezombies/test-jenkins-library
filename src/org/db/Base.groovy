@@ -1,3 +1,5 @@
+package org.db
+
 import groovy.sql.Sql
 import org.jenkinsci.plugins.database.GlobalDatabaseConfiguration
 import org.jenkinsci.plugins.database.Database
