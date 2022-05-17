@@ -1,13 +1,13 @@
 package org.db
 
-Binding binding = getBinding()
+// Binding binding = getBinding()
 
 class ALogger {
     static ALogger self = null
     static Binding binding = null
 
     ALogger() {
-        this.binding = binding
+        // this.binding = binding
     }
 
     static def get() {
