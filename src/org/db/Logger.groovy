@@ -14,7 +14,7 @@ class ALogger {
         this.binding = binding
     }
 
-    def get() {
+    static def get() {
         if (!self) {
             self = new ALogger()
         }
