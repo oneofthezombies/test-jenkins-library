@@ -2,7 +2,7 @@ package org.db
 
 Binding binding = getBinding()
 
-class Logger {
+class ALogger {
     static def getOut() {
         return binding.out
     }
