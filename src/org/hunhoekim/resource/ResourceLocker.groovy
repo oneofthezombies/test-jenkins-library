@@ -31,6 +31,27 @@ class ResourceLocker implements Serializable {
     static final String DEFAULT_UNIT = UNIT_SECONDS
     static final Integer DEFAULT_RETRY_COUNT = 3
 
+    final Integer time
+    final String unit
+    final Integer retryCount
+
+    Timeout(Map args) {
+      /* groovylint-disable-next-line NoDef, VariableTypeRequired */
+      def time = args.get('time', DEFAULT_TIME)
+      if (time !instanceof Integer) {
+        time = time.toInteger()
+      }
+      String unit = args.get('unit', DEFAULT_UNIT)
+      /* groovylint-disable-next-line NoDef, VariableTypeRequired */
+      def retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT)
+      if (retryCount !instanceof Integer) {
+        retryCount = retryCount.toInteger()
+      }
+      this.time = time
+      this.unit = unit
+      this.retryCount = retryCount
+    }
+
   }
 
   class TimeoutException extends Exception {
@@ -50,15 +71,10 @@ class ResourceLocker implements Serializable {
   void lock(Map args) {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
-    Map timeout = args.get('timeout', [:])
-    Integer timeoutTime = timeout.get('time', Timeout.DEFAULT_TIME) as Integer
-    String timeoutUnit = timeout.get('unit', Timeout.DEFAULT_UNIT)
-    Integer timeoutRetryCount = timeout.get('retryCount', Timeout.DEFAULT_RETRY_COUNT)
-
-    this.script.println "lock(resourceLabels: ${resourceLabels}, timeoutTime: ${timeoutTime}, timeoutUnit: ${timeoutUnit}, timeoutRetryCount:${timeoutRetryCount}"
+    Timeout timeout = new Timeout(args.get('timeout', [:]))
 
     TimeoutException lastTimeoutException = null
-    for (Integer i = 0; i < timeoutRetryCount; ++i) {
+    for (Integer i = 0; i < timeout.retryCount; ++i) {
       try {
         this.script.parallel(
           'ResourceLocker acquire step': {
@@ -66,7 +82,7 @@ class ResourceLocker implements Serializable {
           },
           'ResourceLocker timeout step': {
             try {
-              this.script.timeout(time: timeoutTime, unit: timeoutUnit) {
+              this.script.timeout(time: timeout.time, unit: timeout.unit) {
                 /* groovylint-disable-next-line EmptyWhileStatement, NestedBlockDepth */
                 while (!this.isAcquired) { /* do nothing */ }
               }
