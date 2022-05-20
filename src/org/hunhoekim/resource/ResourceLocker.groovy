@@ -22,21 +22,26 @@ class ResourceLocker implements Serializable {
   }
 
   private static final long serialVersionUID = 1
+  private def step = null
   private Boolean isAcquired = false
   Integer retryCount = 10
+
+  ResourceLocker(step) {
+    this.step = step
+  }
 
   void lock(Map args) {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
 
-    parallel(
+    this.step.parallel(
       'ResourceLocker.AcquireStep': {
         this.lockRecursive(resourceLabels, [], onAcquire)
       },
       'ResourceLocker.TimeoutStep': {
         try {
-          timeout(time: timeout.time, unit: timeout.unit) { /* do nothing */ }
+          this.step.timeout(time: timeout.time, unit: timeout.unit) { /* do nothing */ }
         } catch (Exception e) {
           if (!this.isAcquired) {
             throw e
@@ -53,7 +58,7 @@ class ResourceLocker implements Serializable {
       onAcquire(resources)
     }
     String resourceLabel = remainResourceLabels.head()
-    lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
+    this.step.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
       resources.add(new Resource(label:resourceLabel, name: env.LOCKED_RESOURCE))
       lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
     }
