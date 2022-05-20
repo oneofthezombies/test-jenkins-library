@@ -5,7 +5,7 @@ import groovy.transform.stc.SecondParam
 import groovy.transform.stc.ClosureParams
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 
-@CompileStatic
+// @CompileStatic
 class ResourceLocker implements Serializable {
 
   class Resource {
