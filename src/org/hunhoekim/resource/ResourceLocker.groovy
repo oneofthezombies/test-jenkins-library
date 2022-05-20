@@ -1,3 +1,5 @@
+package org.hunhoekim.resource
+
 class ResourceLocker implements Serializable {
 
   class Resource {
