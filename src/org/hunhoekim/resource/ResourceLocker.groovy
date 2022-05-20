@@ -34,8 +34,8 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
-    this.step.echo args
-    this.step.echo timeout
+    this.step.echo "1 ${args}"
+    this.step.echo "2 ${timeout}"
 
     this.step.parallel(
       'ResourceLocker.AcquireStep': {
