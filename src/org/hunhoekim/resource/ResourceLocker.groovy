@@ -51,9 +51,10 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Map timeout = args.get('timeout', [:])
-    Integer timeoutTime = timeout.get('time', Timeout.DEFAULT_TIME)
+    Integer timeoutTime = timeout.get('time', Timeout.DEFAULT_TIME) as Integer
     String timeoutUnit = timeout.get('unit', Timeout.DEFAULT_UNIT)
     Integer timeoutRetryCount = timeout.get('retryCount', Timeout.DEFAULT_RETRY_COUNT)
+    this.script.echo "${resourceLabels} ${timeoutTime} ${timeoutUnit} ${timeoutRetryCount.getClass()}"
 
     TimeoutException lastTimeoutException = null
     for (Integer i = 0; i < timeoutRetryCount; ++i) {
