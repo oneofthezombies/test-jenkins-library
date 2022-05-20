@@ -67,14 +67,14 @@ class ResourceLocker implements Serializable {
     List<Resource> resources,
     @ClosureParams(SecondParam) Closure onAcquire) {
     if (!remainResourceLabels) {
-      isAcquired = true
+      this.isAcquired = true
       onAcquire(resources)
       return
     }
     String resourceLabel = remainResourceLabels.head()
     this.script.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
       resources.add(new Resource(label:resourceLabel, name: this.script.env.LOCKED_RESOURCE))
-      lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
+      this.lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
     }
   }
 
