@@ -12,8 +12,8 @@ import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 @CompileDynamic
 class ResourceLocker implements Serializable {
 
-  @CompileStatic
   @ToString(includeNames=true)
+  @CompileStatic
   class Resource implements Serializable {
 
     private static final long serialVersionUID = 1
@@ -22,8 +22,8 @@ class ResourceLocker implements Serializable {
 
   }
 
-  @CompileStatic
   @ToString(includeNames=true)
+  @CompileStatic
   class Timeout implements Serializable {
 
     private static final long serialVersionUID = 1
