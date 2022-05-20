@@ -23,10 +23,6 @@ class ResourceLocker implements Serializable {
   @CompileStatic
   class Timeout implements Serializable {
 
-    class Exception extends FlowInterruptedException {
-
-    }
-
     private static final long serialVersionUID = 1
     static final String UNIT_HOURS = 'HOURS'
     static final String UNIT_MINUTES = 'MINUTES'
@@ -34,6 +30,12 @@ class ResourceLocker implements Serializable {
     static final Integer DEFAULT_TIME = 10
     static final String DEFAULT_UNIT = UNIT_SECONDS
     static final Integer DEFAULT_RETRY_COUNT = 3
+
+  }
+
+  class TimeoutException extends Exception {
+
+    FlowInterruptedException original
 
   }
 
@@ -68,7 +70,7 @@ class ResourceLocker implements Serializable {
               }
             } catch (FlowInterruptedException e) {
               if (!this.isAcquired) {
-                throw new Timeout.Exception(e)
+                throw new TimeoutException(original: e)
               }
             }
           },
@@ -76,7 +78,7 @@ class ResourceLocker implements Serializable {
         )
         return
       /* groovylint-disable-next-line CatchException, EmptyCatchBlock */
-      } catch (Timeout.Exception e) {
+      } catch (TimeoutException e) {
         lastTimeoutException = e
       }
     }
