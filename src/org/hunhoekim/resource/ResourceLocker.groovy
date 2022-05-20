@@ -46,8 +46,6 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
-    this.script.echo "1 ${args}"
-    this.script.echo "2 ${timeout}"
 
     this.script.parallel(
       'ResourceLocker.AcquireStep': {
@@ -56,6 +54,7 @@ class ResourceLocker implements Serializable {
       'ResourceLocker.TimeoutStep': {
         try {
           this.script.timeout(time: timeout.time, unit: timeout.unit) {
+            /* groovylint-disable-next-line EmptyWhileStatement */
             while (!this.isAcquired) { /* do nothing */ }
           }
         } catch (Exception e) {
