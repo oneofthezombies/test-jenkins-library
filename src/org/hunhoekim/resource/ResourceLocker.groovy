@@ -1,5 +1,6 @@
 package org.hunhoekim.resource
 
+import groovy.transform.ToString
 import groovy.transform.CompileStatic
 import groovy.transform.CompileDynamic
 import groovy.transform.stc.SecondParam
@@ -12,6 +13,7 @@ import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 class ResourceLocker implements Serializable {
 
   @CompileStatic
+  @ToString(includeNames=true)
   class Resource implements Serializable {
 
     private static final long serialVersionUID = 1
@@ -21,6 +23,7 @@ class ResourceLocker implements Serializable {
   }
 
   @CompileStatic
+  @ToString(includeNames=true)
   class Timeout implements Serializable {
 
     private static final long serialVersionUID = 1
