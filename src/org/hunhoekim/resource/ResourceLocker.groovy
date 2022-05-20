@@ -55,7 +55,7 @@ class ResourceLocker implements Serializable {
     String timeoutUnit = timeout.get('unit', Timeout.DEFAULT_UNIT)
     Integer timeoutRetryCount = timeout.get('retryCount', Timeout.DEFAULT_RETRY_COUNT)
 
-    Timeout.Exception lastTimeoutException = null
+    TimeoutException lastTimeoutException = null
     for (Integer i = 0; i < timeoutRetryCount; ++i) {
       try {
         this.script.parallel(
