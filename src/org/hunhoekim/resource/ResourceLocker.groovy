@@ -1,6 +1,5 @@
 package org.hunhoekim.resource
 
-import groovy.transform.ToString
 import groovy.transform.CompileStatic
 import groovy.transform.CompileDynamic
 import groovy.transform.stc.SecondParam
@@ -8,11 +7,10 @@ import groovy.transform.stc.ClosureParams
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
-
+/* groovylint-disable-next-line ClassJavadoc */
 @CompileDynamic
 class ResourceLocker implements Serializable {
 
-  @ToString(includeNames=true)
   @CompileStatic
   class Resource implements Serializable {
 
@@ -22,7 +20,6 @@ class ResourceLocker implements Serializable {
 
   }
 
-  @ToString(includeNames=true)
   @CompileStatic
   class Timeout implements Serializable {
 
