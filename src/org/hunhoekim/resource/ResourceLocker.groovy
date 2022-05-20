@@ -29,8 +29,13 @@ class ResourceLocker implements Serializable {
     static final String UNIT_SECONDS = 'SECONDS'
     static final Integer DEFAULT_TIME = 10
     static final String DEFAULT_UNIT = UNIT_SECONDS
-    Integer time
-    String unit
+    Integer time = DEFAULT_TIME
+    String unit = DEFAULT_UNIT
+
+    Timeout(Map args) {
+      this.time = args['time']
+      this.unit = args['unit']
+    }
 
   }
 
