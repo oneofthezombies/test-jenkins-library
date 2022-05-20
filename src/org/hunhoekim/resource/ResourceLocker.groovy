@@ -32,11 +32,6 @@ class ResourceLocker implements Serializable {
     Integer time = DEFAULT_TIME
     String unit = DEFAULT_UNIT
 
-    Timeout(Map args) {
-      this.time = args['time']
-      this.unit = args['unit']
-    }
-
   }
 
   private static final long serialVersionUID = 1
