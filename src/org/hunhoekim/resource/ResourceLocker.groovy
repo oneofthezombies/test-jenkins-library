@@ -59,6 +59,7 @@ class ResourceLocker implements Serializable {
           }
         } catch (Exception e) {
           if (!this.isAcquired) {
+            this.script.echo e.getClass()
             throw e
           }
         }
