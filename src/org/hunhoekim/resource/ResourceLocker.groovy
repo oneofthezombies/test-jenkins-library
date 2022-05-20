@@ -28,14 +28,12 @@ class ResourceLocker implements Serializable {
     static final String UNIT_SECONDS = 'SECONDS'
     static final Integer DEFAULT_TIME = 10
     static final String DEFAULT_UNIT = UNIT_SECONDS
-
     Integer time
     String unit
 
   }
 
   private static final long serialVersionUID = 1
-
   private final CpsScript script
   private Boolean isAcquired = false
   Integer retryCount = 10
