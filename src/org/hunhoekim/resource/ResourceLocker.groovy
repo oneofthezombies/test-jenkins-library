@@ -28,7 +28,7 @@ class ResourceLocker implements Serializable {
 
   ResourceLocker(step) {
     this.step = step
-    this.step.echo this.step.getClass()
+    this.step.echo "0 ${this.step.getClass()}"
   }
 
   void lock(Map args) {
