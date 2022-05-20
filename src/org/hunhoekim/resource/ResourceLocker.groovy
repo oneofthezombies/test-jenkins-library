@@ -46,7 +46,7 @@ class ResourceLocker implements Serializable {
       'ResourceLocker.TimeoutStep': {
         try {
           this.script.timeout(time: timeout.time, unit: timeout.unit) {
-            while (true) { /* do nothing */ }
+            while (!this.isAcquired) { /* do nothing */ }
           }
         } catch (Exception e) {
           if (!this.isAcquired) {
