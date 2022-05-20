@@ -49,10 +49,10 @@ class ResourceLocker implements Serializable {
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
 
     this.script.parallel(
-      'ResourceLocker.AcquireStep': {
+      'ResourceLocker acquire step': {
         this.lockRecursive(resourceLabels, [], onAcquire)
       },
-      'ResourceLocker.TimeoutStep': {
+      'ResourceLocker timeout step': {
         try {
           this.script.timeout(time: timeout.time, unit: timeout.unit) {
             /* groovylint-disable-next-line EmptyWhileStatement */
