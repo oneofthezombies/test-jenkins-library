@@ -22,29 +22,28 @@ class ResourceLocker implements Serializable {
   }
 
   private static final long serialVersionUID = 1
-  private def step = null
+  private final WorkflowScript workflowScript
   private Boolean isAcquired = false
   Integer retryCount = 10
 
-  ResourceLocker(step) {
-    this.step = step
-    this.step.echo "0 ${this.step.getClass()}"
+  ResourceLocker(WorkflowScript workflowScript) {
+    this.workflowScript = workflowScript
   }
 
   void lock(Map args) {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
-    this.step.echo "1 ${args}"
-    this.step.echo "2 ${timeout}"
+    this.workflowScript.echo "1 ${args}"
+    this.workflowScript.echo "2 ${timeout}"
 
-    this.step.parallel(
+    this.workflowScript.parallel(
       'ResourceLocker.AcquireStep': {
         this.lockRecursive(resourceLabels, [], onAcquire)
       },
       'ResourceLocker.TimeoutStep': {
         try {
-          this.step.timeout(time: timeout.time, unit: timeout.unit) {
+          this.workflowScript.timeout(time: timeout.time, unit: timeout.unit) {
             while (true) { /* do nothing */ }
           }
         } catch (Exception e) {
@@ -63,7 +62,7 @@ class ResourceLocker implements Serializable {
       onAcquire(resources)
     }
     String resourceLabel = remainResourceLabels.head()
-    this.step.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
+    this.workflowScript.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
       resources.add(new Resource(label:resourceLabel, name: env.LOCKED_RESOURCE))
       lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
     }
