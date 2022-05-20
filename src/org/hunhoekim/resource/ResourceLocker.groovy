@@ -1,6 +1,7 @@
 package org.hunhoekim.resource
 
 import groovy.transform.CompileStatic
+import groovy.transform.stc.SecondParam
 import groovy.transform.stc.ClosureParams
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 
