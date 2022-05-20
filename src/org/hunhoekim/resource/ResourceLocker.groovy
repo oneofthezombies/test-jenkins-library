@@ -1,5 +1,7 @@
 package org.hunhoekim.resource
 
+import org.jenkinsci.plugins.workflow.cps.CpsScript
+
 class ResourceLocker implements Serializable {
 
   class Resource {
@@ -22,28 +24,28 @@ class ResourceLocker implements Serializable {
   }
 
   private static final long serialVersionUID = 1
-  private final WorkflowScript workflowScript
+  private final CpsScript script
   private Boolean isAcquired = false
   Integer retryCount = 10
 
-  ResourceLocker(WorkflowScript workflowScript) {
-    this.workflowScript = workflowScript
+  ResourceLocker(CpsScript script) {
+    this.script = script
   }
 
   void lock(Map args) {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = args.get('timeout', new Timeout(time: Timeout.DEFAULT_TIME, unit: Timeout.DEFAULT_UNIT))
-    this.workflowScript.echo "1 ${args}"
-    this.workflowScript.echo "2 ${timeout}"
+    this.script.echo "1 ${args}"
+    this.script.echo "2 ${timeout}"
 
-    this.workflowScript.parallel(
+    this.script.parallel(
       'ResourceLocker.AcquireStep': {
         this.lockRecursive(resourceLabels, [], onAcquire)
       },
       'ResourceLocker.TimeoutStep': {
         try {
-          this.workflowScript.timeout(time: timeout.time, unit: timeout.unit) {
+          this.script.timeout(time: timeout.time, unit: timeout.unit) {
             while (true) { /* do nothing */ }
           }
         } catch (Exception e) {
@@ -62,7 +64,7 @@ class ResourceLocker implements Serializable {
       onAcquire(resources)
     }
     String resourceLabel = remainResourceLabels.head()
-    this.workflowScript.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
+    this.script.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
       resources.add(new Resource(label:resourceLabel, name: env.LOCKED_RESOURCE))
       lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
     }
