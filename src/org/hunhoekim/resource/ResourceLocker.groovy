@@ -48,6 +48,7 @@ class ResourceLocker implements Serializable {
       String unit = args.get('unit', DEFAULT_UNIT)
       /* groovylint-disable-next-line NoDef, VariableTypeRequired */
       def retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT)
+      this.script.println "@@@@ ${retryCount}"
       /* groovylint-disable-next-line Instanceof */
       if (!(retryCount instanceof Integer)) {
         retryCount = retryCount.toInteger()
@@ -79,7 +80,7 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = new Timeout(this.script, args.get('timeout', [:]))
-    this.script.println "lock(resourceLabels: ${}, timeout:{time: ${timeout.time}, unit: ${timeout.unit}, retryCount: ${timeout.retryCount}}"
+    this.script.println "lock(resourceLabels: ${resourceLabels}, timeout:{time: ${timeout.time}, unit: ${timeout.unit}, retryCount: ${timeout.retryCount}}"
 
     TimeoutException lastTimeoutException = null
     for (Integer i = 0; i < timeout.retryCount; ++i) {
