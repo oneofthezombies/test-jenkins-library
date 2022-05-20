@@ -54,7 +54,7 @@ class ResourceLocker implements Serializable {
           }
         }
       },
-      fastFail: true
+      failFast: true
     )
   }
 
