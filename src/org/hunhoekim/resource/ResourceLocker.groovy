@@ -5,29 +5,35 @@ import groovy.transform.stc.SecondParam
 import groovy.transform.stc.ClosureParams
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 
-// @CompileStatic
+@CompileStatic
 class ResourceLocker implements Serializable {
 
-  class Resource {
+  @CompileStatic
+  class Resource implements Serializable {
 
+    private static final long serialVersionUID = 1
     String label
     String name
 
   }
 
-  class Timeout {
+  @CompileStatic
+  class Timeout implements Serializable {
 
+    private static final long serialVersionUID = 1
     static final String UNIT_HOURS = 'HOURS'
     static final String UNIT_MINUTES = 'MINUTES'
     static final String UNIT_SECONDS = 'SECONDS'
     static final Integer DEFAULT_TIME = 10
     static final String DEFAULT_UNIT = UNIT_SECONDS
+
     Integer time
     String unit
 
   }
 
   private static final long serialVersionUID = 1
+
   private final CpsScript script
   private Boolean isAcquired = false
   Integer retryCount = 10
