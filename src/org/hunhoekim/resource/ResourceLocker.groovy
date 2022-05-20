@@ -78,7 +78,7 @@ class ResourceLocker implements Serializable {
       return
     }
     String resourceLabel = remainResourceLabels.head()
-    this.script.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
+    this.script.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE', quantity: 1) {
       resources.add(new Resource(label:resourceLabel, name: this.script.env.LOCKED_RESOURCE))
       this.lockRecursive(remainResourceLabels.tail(), resources, onAcquire)
     }
