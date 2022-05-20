@@ -1,13 +1,13 @@
 package org.hunhoekim.resource
 
 import groovy.transform.CompileStatic
+import groovy.transform.CompileDynamic
 import groovy.transform.stc.SecondParam
 import groovy.transform.stc.ClosureParams
-import grails.compiler.GrailsCompileStatic
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 
 
-@GrailsCompileStatic
+@CompileDynamic
 class ResourceLocker implements Serializable {
 
   @CompileStatic
