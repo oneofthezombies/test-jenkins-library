@@ -74,6 +74,7 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = new Timeout(args.get('timeout', [:]))
+    this.script.println "lock(resourceLabels: ${}, timeout:{time: ${timeout.time}, unit: ${timeout.unit}, retryCount: ${timeout.retryCount}}"
 
     TimeoutException lastTimeoutException = null
     for (Integer i = 0; i < timeout.retryCount; ++i) {
