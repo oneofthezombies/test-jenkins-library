@@ -5,6 +5,7 @@ import groovy.transform.CompileDynamic
 import groovy.transform.stc.SecondParam
 import groovy.transform.stc.ClosureParams
 import org.jenkinsci.plugins.workflow.cps.CpsScript
+import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 
 @CompileDynamic
@@ -57,9 +58,8 @@ class ResourceLocker implements Serializable {
             /* groovylint-disable-next-line EmptyWhileStatement */
             while (!this.isAcquired) { /* do nothing */ }
           }
-        } catch (Exception e) {
+        } catch (FlowInterruptedException e) {
           if (!this.isAcquired) {
-            this.script.echo e.getClass()
             throw e
           }
         }
