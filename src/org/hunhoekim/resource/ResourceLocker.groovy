@@ -38,13 +38,15 @@ class ResourceLocker implements Serializable {
     Timeout(Map args) {
       /* groovylint-disable-next-line NoDef, VariableTypeRequired */
       def time = args.get('time', DEFAULT_TIME)
-      if (time !instanceof Integer) {
+      /* groovylint-disable-next-line Instanceof */
+      if (!(time instanceof Integer)) {
         time = time.toInteger()
       }
       String unit = args.get('unit', DEFAULT_UNIT)
       /* groovylint-disable-next-line NoDef, VariableTypeRequired */
       def retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT)
-      if (retryCount !instanceof Integer) {
+      /* groovylint-disable-next-line Instanceof */
+      if (!(retryCount instanceof Integer)) {
         retryCount = retryCount.toInteger()
       }
       this.time = time
@@ -95,12 +97,11 @@ class ResourceLocker implements Serializable {
           failFast: true
         )
         return
-      /* groovylint-disable-next-line CatchException, EmptyCatchBlock */
       } catch (TimeoutException e) {
         lastTimeoutException = e
       }
     }
-    throw lastTimeoutException
+    throw lastTimeoutException.original
   }
 
   private void lockRecursive(
