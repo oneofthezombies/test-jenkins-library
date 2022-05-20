@@ -62,6 +62,7 @@ class ResourceLocker implements Serializable {
     if (!remainResourceLabels) {
       isAcquired = true
       onAcquire(resources)
+      return
     }
     String resourceLabel = remainResourceLabels.head()
     this.script.lock(label: resourceLabel, variable: 'LOCKED_RESOURCE') {
