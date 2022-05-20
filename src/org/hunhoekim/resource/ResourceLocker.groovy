@@ -2,6 +2,7 @@ package org.hunhoekim.resource
 
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 
+@CompileStatic
 class ResourceLocker implements Serializable {
 
   class Resource {
@@ -58,7 +59,10 @@ class ResourceLocker implements Serializable {
     )
   }
 
-  private void lockRecursive(List<String> remainResourceLabels, List<Resource> resources, Closure onAcquire) {
+  private void lockRecursive(
+    List<String> remainResourceLabels,
+    List<Resource> resources,
+    @ClosureParams(SecondParam) Closure onAcquire) {
     if (!remainResourceLabels) {
       isAcquired = true
       onAcquire(resources)
