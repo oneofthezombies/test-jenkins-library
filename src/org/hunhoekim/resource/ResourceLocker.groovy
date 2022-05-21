@@ -18,6 +18,10 @@ class ResourceLocker implements Serializable {
     String label
     String name
 
+    String toString() {
+      return "Resource label: [${this.label}] name: [${this.name}]"
+    }
+
   }
 
   @CompileStatic
@@ -43,6 +47,10 @@ class ResourceLocker implements Serializable {
       this.retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT) as Integer
     }
 
+    String toString() {
+      return "Timeout time: [${this.time}] unit: [${this.unit}] retryCount: [${this.retryCount}]"
+    }
+
   }
 
   class TimeoutException extends Exception {
@@ -63,10 +71,13 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = new Timeout(this.script, args.get('timeout', [:]))
+    this.script.println "[ResourceLocker][lock] resourceLabels: [${resourceLabels}] timeout: [${timeout}]"
+    this.script.println "[ResourceLocker][lock] onAcquire: [${onAcquire}]"
 
     TimeoutException lastTimeoutException = null
-    for (Integer i = 0; i < timeout.retryCount; ++i) {
+    for (Integer i = 1; i <= timeout.retryCount; ++i) {
       try {
+        this.script.println "[ResourceLocker][lock] current try count: [${i}] max retryCount: [${timeout.retryCount}]"
         this.script.parallel(
           'ResourceLocker acquire step': {
             this.lockRecursive(resourceLabels, [], onAcquire)
@@ -99,6 +110,7 @@ class ResourceLocker implements Serializable {
     @ClosureParams(SecondParam) Closure onAcquire) {
     if (!remainResourceLabels) {
       this.isAcquired = true
+      this.script.println "[ResourceLocker][lockRecursive] resources: [${resources}]"
       onAcquire(resources)
       return
     }
