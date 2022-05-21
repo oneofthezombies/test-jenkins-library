@@ -38,26 +38,9 @@ class ResourceLocker implements Serializable {
 
     Timeout(CpsScript script, Map args) {
       this.script = script
-      /* groovylint-disable-next-line NoDef, VariableTypeRequired */
-      def time = args.get('time', DEFAULT_TIME)
-      /* groovylint-disable-next-line Instanceof */
-      if (!(time instanceof Integer)) {
-        time = time.toInteger()
-        this.script.println "@@@"
-      }
-      String unit = args.get('unit', DEFAULT_UNIT)
-      /* groovylint-disable-next-line NoDef, VariableTypeRequired */
-      def retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT)
-      this.script.println "@@@@ ${retryCount}"
-      /* groovylint-disable-next-line Instanceof */
-      if (!(retryCount instanceof Integer)) {
-        retryCount = retryCount.toInteger()
-        this.script.println "@@@"
-      }
-      this.time = time
-      this.unit = unit
-      this.retryCount = retryCount
-
+      this.time = args.get('time', DEFAULT_TIME) as Integer
+      this.unit = args.get('unit', DEFAULT_UNIT)
+      this.retryCount = args.get('retryCount', DEFAULT_RETRY_COUNT) as Integer
     }
 
   }
@@ -80,7 +63,6 @@ class ResourceLocker implements Serializable {
     List<String> resourceLabels = args['resourceLabels']
     Closure onAcquire = args['onAcquire']
     Timeout timeout = new Timeout(this.script, args.get('timeout', [:]))
-    this.script.println "lock(resourceLabels: ${resourceLabels}, timeout:{time: ${timeout.time}, unit: ${timeout.unit}, retryCount: ${timeout.retryCount}}"
 
     TimeoutException lastTimeoutException = null
     for (Integer i = 0; i < timeout.retryCount; ++i) {
